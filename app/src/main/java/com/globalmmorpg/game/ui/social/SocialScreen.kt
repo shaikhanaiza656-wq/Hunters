@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.globalmmorpg.game.ui.social
 
 import android.Manifest

@@ -83,7 +83,7 @@ class MainActivity : ComponentActivity() {
                 val factory = remember(current.uid) {
                     CharacterCreationViewModelFactory(current.uid, characterRepository)
                 }
-                val vm = viewModel(factory = factory)
+                val vm = viewModel<com.globalmmorpg.game.ui.character.CharacterCreationViewModel>(factory = factory)
                 CharacterCreationScreen(
                     viewModel = vm,
                     onCharacterCreated = { screen = Screen.InGame(current.uid) }
@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
                 val hudFactory = remember(current.uid) {
                     HudViewModelFactory(current.uid, PlayerRepository())
                 }
-                val hudViewModel = viewModel(factory = hudFactory)
+                val hudViewModel = viewModel<com.globalmmorpg.game.ui.hud.HudViewModel>(factory = hudFactory)
                 HudScreen(
                     viewModel = hudViewModel,
                     onFindGateClicked = { screen = Screen.GateBrowser(current.uid) },
@@ -106,13 +106,13 @@ class MainActivity : ComponentActivity() {
                 val socialFactory = remember(current.uid) {
                     SocialViewModelFactory(current.uid)
                 }
-                val socialViewModel = viewModel(factory = socialFactory)
+                val socialViewModel = viewModel<com.globalmmorpg.game.ui.social.SocialViewModel>(factory = socialFactory)
                 // Keyed separately from the Gate voice VoiceViewModel so guild voice
                 // and gate voice never share the same ViewModel instance/state.
                 val voiceFactory = remember(current.uid) {
                     VoiceViewModelFactory(applicationContext)
                 }
-                val voiceViewModel = viewModel(factory = voiceFactory, key = "guildVoice_${current.uid}")
+                val voiceViewModel = viewModel<com.globalmmorpg.game.ui.voice.VoiceViewModel>(factory = voiceFactory, key = "guildVoice_${current.uid}")
                 SocialScreen(
                     viewModel = socialViewModel,
                     voiceViewModel = voiceViewModel,
@@ -129,15 +129,15 @@ class MainActivity : ComponentActivity() {
                 val hudFactory = remember(current.uid) {
                     HudViewModelFactory(current.uid, PlayerRepository())
                 }
-                val hudViewModel = viewModel(factory = hudFactory)
+                val hudViewModel = viewModel<com.globalmmorpg.game.ui.hud.HudViewModel>(factory = hudFactory)
                 val gateFactory = remember(current.gateId) {
                     GateViewModelFactory(current.gateId, gateRepository)
                 }
-                val gateViewModel = viewModel(factory = gateFactory)
+                val gateViewModel = viewModel<com.globalmmorpg.game.ui.gate.GateViewModel>(factory = gateFactory)
                 val voiceFactory = remember(current.gateId) {
                     VoiceViewModelFactory(applicationContext)
                 }
-                val voiceViewModel = viewModel(factory = voiceFactory)
+                val voiceViewModel = viewModel<com.globalmmorpg.game.ui.voice.VoiceViewModel>(factory = voiceFactory)
                 GateScreen(
                     hudViewModel = hudViewModel,
                     gateViewModel = gateViewModel,

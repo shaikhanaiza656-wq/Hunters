@@ -17,12 +17,12 @@ data class Guild(
     )
 
     companion object {
+        @Suppress("UNCHECKED_CAST")
         fun fromMap(id: String, map: Map<String, Any?>): Guild = Guild(
             id = id,
             name = (map["name"] as? String) ?: "",
             tag = (map["tag"] as? String) ?: "",
             leaderUid = (map["leaderUid"] as? String) ?: "",
-            @Suppress("UNCHECKED_CAST")
             memberUids = (map["memberUids"] as? List<String>) ?: emptyList(),
             createdAtEpochMs = (map["createdAtEpochMs"] as? Long) ?: 0L
         )

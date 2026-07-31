@@ -11,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.globalmmorpg.game.data.character.CharacterField
 import com.globalmmorpg.game.data.character.Gender
 
 @Composable
