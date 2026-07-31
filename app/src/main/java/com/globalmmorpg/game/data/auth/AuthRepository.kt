@@ -17,6 +17,9 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 sealed class AuthResult {
@@ -41,7 +44,16 @@ class AuthRepository(
         return try {
             val result = firebaseAuth.signInAnonymously().await()
             val user = result.user ?: return AuthResult.Failure("No user returned")
-            GuestAccountManager(firebaseAuth).touchLastActive(user.uid)
+            // Fire-and-forget: this is background bookkeeping for the 30-day
+            // inactive-guest cleanup job, not something the login screen should
+            // ever block on. It still runs for real against Firestore.
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    GuestAccountManager(firebaseAuth).touchLastActive(user.uid)
+                } catch (_: Exception) {
+                    // Non-fatal: activity tracking failing must never affect login.
+                }
+            }
             AuthResult.Success(user)
         } catch (e: Exception) {
             AuthResult.Failure(e.message ?: "Guest sign-in failed")
