@@ -1,21 +1,33 @@
 package com.globalmmorpg.game.ui.hud
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.globalmmorpg.game.R
 import com.globalmmorpg.game.ui.theme.HpRed
 import com.globalmmorpg.game.ui.theme.ManaBlue
 import com.globalmmorpg.game.ui.theme.StaminaGreen
+import kotlinx.coroutines.delay
+import kotlin.math.roundToInt
 
 @Composable
 fun HudScreen(
@@ -29,6 +41,39 @@ fun HudScreen(
     val cooldowns by viewModel.cooldowns.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
+
+        // Open-world background — replaces the previous blank canvas.
+        Image(
+            painter = painterResource(R.drawable.bg_world_field),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+
+        // Real player position, driven by the same joystick vector used
+        // by HudViewModel.onJoystickMoved — not decorative.
+        var playerOffset by remember { mutableStateOf(Offset.Zero) }
+        LaunchedEffect(Unit) {
+            while (true) {
+                val (dx, dy) = viewModel.movementVector.value
+                if (dx != 0f || dy != 0f) {
+                    val speed = 5f
+                    playerOffset = Offset(
+                        x = (playerOffset.x + dx * speed).coerceIn(-160f, 160f),
+                        y = (playerOffset.y + dy * speed).coerceIn(-260f, 260f)
+                    )
+                }
+                delay(16)
+            }
+        }
+        Image(
+            painter = painterResource(R.drawable.sprite_player),
+            contentDescription = "Player",
+            modifier = Modifier
+                .align(Alignment.Center)
+                .size(84.dp)
+                .offset { IntOffset(playerOffset.x.roundToInt(), playerOffset.y.roundToInt()) }
+        )
 
         // --- Top-left: HP / Mana / Stamina + Rank/Level ---
         Column(
