@@ -1,0 +1,11 @@
+{
+  "name": "globalmmorpg-functions",
+  "engines": { "node": "20" },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.3.1",
+    "firebase-functions": "^5.0.1",
+    "agora-access-token": "^2.0.4"
+  },
+  "private": true
+}

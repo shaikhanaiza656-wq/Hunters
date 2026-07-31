@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Global MMORPG</string>
+
+    <!-- === FILL THESE WITH YOUR OWN REAL VALUES BEFORE BUILDING === -->
+    <!-- Get this from Google Cloud Console -> APIs & Services -> Credentials
+         (OAuth 2.0 Client ID, type "Web application") -->
+    <string name="google_web_client_id">PUT_YOUR_GOOGLE_WEB_CLIENT_ID_HERE</string>
+
+    <!-- Get these from developers.facebook.com -> Your App -> Settings -> Basic -->
+    <string name="facebook_app_id">PUT_YOUR_FACEBOOK_APP_ID_HERE</string>
+    <string name="facebook_client_token">PUT_YOUR_FACEBOOK_CLIENT_TOKEN_HERE</string>
+    <string name="fb_login_protocol_scheme">fbPUT_YOUR_FACEBOOK_APP_ID_HERE</string>
+</resources>
